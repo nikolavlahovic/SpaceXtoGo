@@ -1,28 +1,32 @@
-import {View, Text, StyleSheet, Image, Linking} from 'react-native';
+import {View, Text, Image, StyleSheet} from 'react-native';
 import React from 'react';
-import {RocketData} from '../services/rocketService';
 import ExternalLinkIcon from 'react-native-vector-icons/EvilIcons';
-
-const RocketCard = ({
+type CrewProps = {
+  name: string;
+  agency: string;
+  wikipedia: string;
+  image: string;
+  status: string;
+  onModalOpen: () => void;
+};
+export const CrewCard = ({
   name,
-  active,
-  flickr_images,
-  height,
-  wikipedia,
-}: RocketData) => {
+  agency,
+  image,
+  status,
+  onModalOpen,
+}: CrewProps) => {
   return (
     <View style={styles.container}>
       <View>
-        <Image source={{uri: flickr_images[1]}} style={styles.cardImage} />
+        <Image source={{uri: image}} style={styles.cardImage} />
       </View>
       <View style={styles.textView}>
-        <Text>Name- {name}</Text>
-        <Text>Height: {height.meters}m</Text>
+        <Text>Name - {name}</Text>
+        <Text>Agency - {agency}</Text>
         <Text>
-          Rocket is currently
-          <Text style={styles.boldText}>
-            {active ? ' active' : ' inactive'}
-          </Text>
+          Astronaut is currently
+          <Text style={styles.boldText}>{` ${status}`}</Text>
         </Text>
       </View>
       <View>
@@ -31,7 +35,7 @@ const RocketCard = ({
           name={'external-link'}
           color={'#000'}
           style={styles.linkIcon}
-          onPress={() => Linking.openURL(wikipedia)}
+          onPress={() => onModalOpen()}
         />
       </View>
     </View>
@@ -66,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RocketCard;
+export default CrewCard;

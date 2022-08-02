@@ -1,49 +1,37 @@
 import React, {useEffect} from 'react';
-import {
-  Button,
-  PermissionsAndroid,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {Platform, SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import RocketsScreen from './src/screens/RocketsScreen';
-import CrewScreen from './src/screens/CrewScreen';
 import RocketIcon from 'react-native-vector-icons/AntDesign';
-import CrewIcon from 'react-native-vector-icons/Ionicons';
-
+import IoIcon from 'react-native-vector-icons/Ionicons';
+import {requestAttPermission} from './src/AppPermisions/iOSPermissions';
+import {
+  requestCameraPermission,
+  requestExternalStoragePermission,
+} from './src/AppPermisions/AndroidPermissions';
+import CrewRouter from './src/screens/CrewRouter';
 const App = () => {
   const Tab = createBottomTabNavigator();
-  const requestCameraPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.CAMERA,
-        {
-          title: 'Cool Photo App Camera Permission',
-          message:
-            'Cool Photo App needs access to your camera ' +
-            'so you can take awesome pictures.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the camera');
-      } else {
-        console.log('Camera permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
+  const MyTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: 'white',
+    },
   };
   useEffect(() => {
-    requestCameraPermission();
+    if (Platform.OS === 'android') {
+      requestCameraPermission();
+      requestExternalStoragePermission();
+    }
+    if (Platform.OS === 'ios') {
+      requestAttPermission();
+    }
   }, []);
   return (
     <SafeAreaView style={styles.wrapper}>
-      <NavigationContainer>
+      <NavigationContainer theme={MyTheme}>
         <StatusBar
           animated={true}
           backgroundColor="#fff"
@@ -51,7 +39,7 @@ const App = () => {
         />
         <Tab.Navigator initialRouteName="Rockets">
           <Tab.Screen
-            name="Rockets "
+            name="ROCKETS "
             component={RocketsScreen}
             options={{
               tabBarIcon: () => {
@@ -60,14 +48,21 @@ const App = () => {
               tabBarActiveTintColor: '#000',
               tabBarInactiveTintColor: '#ccc',
               headerTitleAlign: 'center',
+              // headerLeft: () => (
+              //   <IoIcon
+              //     style={{marginLeft: 20, color: '#000'}}
+              //     name={'arrow-back'}
+              //     size={25}
+              //   />
+              // ),
             }}
           />
           <Tab.Screen
-            name="Crews"
-            component={CrewScreen}
+            name="CREW"
+            component={CrewRouter}
             options={{
               tabBarIcon: () => {
-                return <CrewIcon size={30} name={'people'} color={'#000'} />;
+                return <IoIcon size={30} name={'people'} color={'#000'} />;
               },
               tabBarActiveTintColor: '#000',
               tabBarInactiveTintColor: '#ccc',
@@ -76,7 +71,6 @@ const App = () => {
           />
         </Tab.Navigator>
       </NavigationContainer>
-      <Button title={'press'} onPress={() => requestCameraPermission()} />
     </SafeAreaView>
   );
 };
