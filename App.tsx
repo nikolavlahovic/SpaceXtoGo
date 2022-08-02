@@ -1,13 +1,46 @@
-import React from 'react';
-import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  Button,
+  PermissionsAndroid,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import RocketsScreen from './src/screens/RocketsScreen';
-import CrewMemberScreen from './src/screens/CrewMemberScreen';
-import NavBar from './src/components/NavBar';
+import CrewScreen from './src/screens/CrewScreen';
+import RocketIcon from 'react-native-vector-icons/AntDesign';
+import CrewIcon from 'react-native-vector-icons/Ionicons';
 
 const App = () => {
-  const Stack = createNativeStackNavigator();
+  const Tab = createBottomTabNavigator();
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'Cool Photo App Camera Permission',
+          message:
+            'Cool Photo App needs access to your camera ' +
+            'so you can take awesome pictures.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the camera');
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+  useEffect(() => {
+    requestCameraPermission();
+  }, []);
   return (
     <SafeAreaView style={styles.wrapper}>
       <NavigationContainer>
@@ -16,12 +49,34 @@ const App = () => {
           backgroundColor="#fff"
           barStyle={'dark-content'}
         />
-        <Stack.Navigator initialRouteName="Rockets">
-          <Stack.Screen name="Rockets" component={RocketsScreen} />
-          <Stack.Screen name="Crew" component={CrewMemberScreen} />
-        </Stack.Navigator>
-        <NavBar />
+        <Tab.Navigator initialRouteName="Rockets">
+          <Tab.Screen
+            name="Rockets "
+            component={RocketsScreen}
+            options={{
+              tabBarIcon: () => {
+                return <RocketIcon size={30} name={'rocket1'} color={'#000'} />;
+              },
+              tabBarActiveTintColor: '#000',
+              tabBarInactiveTintColor: '#ccc',
+              headerTitleAlign: 'center',
+            }}
+          />
+          <Tab.Screen
+            name="Crews"
+            component={CrewScreen}
+            options={{
+              tabBarIcon: () => {
+                return <CrewIcon size={30} name={'people'} color={'#000'} />;
+              },
+              tabBarActiveTintColor: '#000',
+              tabBarInactiveTintColor: '#ccc',
+              headerTitleAlign: 'center',
+            }}
+          />
+        </Tab.Navigator>
       </NavigationContainer>
+      <Button title={'press'} onPress={() => requestCameraPermission()} />
     </SafeAreaView>
   );
 };
@@ -32,6 +87,10 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#000',
+  },
+  tabIcon: {
+    height: 20,
+    width: 20,
   },
 });
 export default App;
