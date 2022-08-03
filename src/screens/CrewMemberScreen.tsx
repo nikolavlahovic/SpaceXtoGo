@@ -7,7 +7,6 @@ type Props = NativeStackScreenProps<StackRouteParams, 'CrewModal'>;
 
 const CrewMemberScreen = ({route}: Props) => {
   const {name, image, status, agency} = route.params;
-
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>

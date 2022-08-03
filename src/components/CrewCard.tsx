@@ -1,6 +1,6 @@
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
-import ExternalLinkIcon from 'react-native-vector-icons/EvilIcons';
+import ImageComponent from './ImageComponent';
 type CrewProps = {
   name: string;
   agency: string;
@@ -17,7 +17,7 @@ export const CrewCard = ({
   onModalOpen,
 }: CrewProps) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={() => onModalOpen()}>
       <View>
         <Image source={{uri: image}} style={styles.cardImage} />
       </View>
@@ -30,15 +30,9 @@ export const CrewCard = ({
         </Text>
       </View>
       <View>
-        <ExternalLinkIcon
-          size={40}
-          name={'external-link'}
-          color={'#000'}
-          style={styles.linkIcon}
-          onPress={() => onModalOpen()}
-        />
+        <ImageComponent agency={agency} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -63,10 +57,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
   },
-  linkIcon: {
-    position: 'absolute',
-    bottom: 5,
-    right: 5,
+  logoImage: {
+    width: 50,
+    height: 50,
   },
 });
 

@@ -6,6 +6,7 @@ import RocketsScreen from './src/screens/RocketsScreen';
 import RocketIcon from 'react-native-vector-icons/AntDesign';
 import IoIcon from 'react-native-vector-icons/Ionicons';
 import {requestAttPermission} from './src/AppPermisions/iOSPermissions';
+import {PropProvider} from './src/Context/PropProvider';
 import {
   requestCameraPermission,
   requestExternalStoragePermission,
@@ -37,41 +38,40 @@ const App = () => {
           backgroundColor="#fff"
           barStyle={'dark-content'}
         />
-        <Tab.Navigator initialRouteName="Rockets">
-          <Tab.Screen
-            name="Rockets "
-            component={RocketsScreen}
-            options={{
-              tabBarIcon: () => {
-                return <RocketIcon size={30} name={'rocket1'} color={'#000'} />;
-              },
-              tabBarActiveTintColor: '#000',
-              tabBarInactiveTintColor: '#ccc',
-              headerTitleAlign: 'center',
-              // headerLeft: () => (
-              //   <IoIcon
-              //     style={{marginLeft: 20, color: '#000'}}
-              //     name={'arrow-back'}
-              //     size={25}
-              //   />
-              // ),
-            }}
-          />
-          <Tab.Group screenOptions={{headerShown: false}}>
+        <PropProvider>
+          <Tab.Navigator initialRouteName="Rockets">
             <Tab.Screen
-              name="Crew"
-              component={CrewRouter}
+              name="Rockets "
+              component={RocketsScreen}
               options={{
                 tabBarIcon: () => {
-                  return <IoIcon size={30} name={'people'} color={'#000'} />;
+                  return (
+                    <RocketIcon size={30} name={'rocket1'} color={'#000'} />
+                  );
                 },
                 tabBarActiveTintColor: '#000',
                 tabBarInactiveTintColor: '#ccc',
                 headerTitleAlign: 'center',
+                tabBarLabel: 'Rockets',
+                title: 'ROCKETS',
               }}
             />
-          </Tab.Group>
-        </Tab.Navigator>
+            <Tab.Group screenOptions={{headerShown: false}}>
+              <Tab.Screen
+                name="Crew"
+                component={CrewRouter}
+                options={{
+                  tabBarIcon: () => {
+                    return <IoIcon size={30} name={'people'} color={'#000'} />;
+                  },
+                  tabBarActiveTintColor: '#000',
+                  tabBarInactiveTintColor: '#ccc',
+                  headerTitleAlign: 'center',
+                }}
+              />
+            </Tab.Group>
+          </Tab.Navigator>
+        </PropProvider>
       </NavigationContainer>
     </SafeAreaView>
   );

@@ -1,4 +1,3 @@
-
 type CrewModalParams = {
   name: string;
   image: string;

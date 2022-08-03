@@ -4,10 +4,12 @@ import {CrewData, getCrewData} from '../services/crewService';
 import CrewCard from '../components/CrewCard';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackRouteParams} from '../utils/types';
+import useProps from '../hooks/useProps';
 
 type Props = NativeStackScreenProps<StackRouteParams, 'CREW'>;
 
 const CrewScreen = ({navigation}: Props) => {
+  const context = useProps();
   const [crew, setCrew] = useState<CrewData[] | null>(null);
   const getCrew = useCallback(async () => {
     try {
@@ -25,15 +27,16 @@ const CrewScreen = ({navigation}: Props) => {
         wikipedia={item.wikipedia}
         image={item.image}
         agency={item.agency}
-        onModalOpen={() =>
+        onModalOpen={() => {
+          context.setModalTitle(item.name);
           navigation.push('CrewModal', {
             name: item.name,
             image: item.image,
             agency: item.agency,
             wikipedia: item.wikipedia,
             status: item.status,
-          })
-        }
+          });
+        }}
       />
     );
   };

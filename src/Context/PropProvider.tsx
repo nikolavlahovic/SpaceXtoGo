@@ -1,4 +1,4 @@
-import {
+import React, {
   createContext,
   useState,
   ReactNode,
@@ -6,20 +6,19 @@ import {
   Dispatch,
 } from 'react';
 
-type UserWithJwt = {};
 interface PropInterface {
-  loggedInUser: UserWithJwt | null;
-  setLoggedInUser: Dispatch<SetStateAction<UserWithJwt | null>>;
+  modalTitle: string;
+  setModalTitle: Dispatch<SetStateAction<string>>;
 }
 const PropContext = createContext<PropInterface | undefined>(undefined);
 
 type Properties = {
   children: ReactNode;
 };
-export const AuthProvider = ({children}: Properties) => {
-  const [loggedInUser, setLoggedInUser] = useState<UserWithJwt | null>(null);
+export const PropProvider = ({children}: Properties) => {
+  const [modalTitle, setModalTitle] = useState<string>('Crew Modal');
   return (
-    <PropContext.Provider value={{loggedInUser, setLoggedInUser}}>
+    <PropContext.Provider value={{modalTitle, setModalTitle}}>
       {children}
     </PropContext.Provider>
   );
