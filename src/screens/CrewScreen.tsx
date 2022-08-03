@@ -55,7 +55,12 @@ const CrewScreen = ({navigation}: Props) => {
   }, [getCrew]);
 
   return (
-    <FlatList data={crew} renderItem={renderItem} keyExtractor={keyExtractor} />
+    <FlatList
+      data={crew}
+      renderItem={renderItem}
+      keyExtractor={keyExtractor}
+      initialNumToRender={3}
+    />
   );
 };
 
