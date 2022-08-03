@@ -6,3 +6,7 @@ export const requestAttPermission = async () => {
     await request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY);
   }
 };
+export const checkAttPermission = async () => {
+  const result = await check(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY);
+  return result;
+};

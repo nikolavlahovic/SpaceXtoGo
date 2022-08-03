@@ -1,17 +1,13 @@
-import React, {useEffect} from 'react';
-import {Platform, SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import React from 'react';
+import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import RocketsScreen from './src/screens/RocketsScreen';
 import RocketIcon from 'react-native-vector-icons/AntDesign';
 import IoIcon from 'react-native-vector-icons/Ionicons';
-import {requestAttPermission} from './src/AppPermisions/iOSPermissions';
 import {PropProvider} from './src/Context/PropProvider';
-import {
-  requestCameraPermission,
-  requestExternalStoragePermission,
-} from './src/AppPermisions/AndroidPermissions';
 import CrewRouter from './src/screens/CrewRouter';
+
 const App = () => {
   const Tab = createBottomTabNavigator();
   const MyTheme = {
@@ -21,15 +17,7 @@ const App = () => {
       background: 'white',
     },
   };
-  useEffect(() => {
-    if (Platform.OS === 'android') {
-      requestCameraPermission();
-      requestExternalStoragePermission();
-    }
-    if (Platform.OS === 'ios') {
-      requestAttPermission();
-    }
-  }, []);
+
   return (
     <SafeAreaView style={styles.wrapper}>
       <NavigationContainer theme={MyTheme}>

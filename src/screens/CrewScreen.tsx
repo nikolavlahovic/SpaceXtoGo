@@ -1,4 +1,4 @@
-import {View, FlatList, ListRenderItem, Alert} from 'react-native';
+import {FlatList, ListRenderItem, Alert} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {CrewData, getCrewData} from '../services/crewService';
 import CrewCard from '../components/CrewCard';
@@ -50,7 +50,6 @@ const CrewScreen = ({navigation}: Props) => {
     );
   };
   const keyExtractor = ({id}: CrewData) => id;
-
   useEffect(() => {
     getCrew();
   }, [getCrew]);

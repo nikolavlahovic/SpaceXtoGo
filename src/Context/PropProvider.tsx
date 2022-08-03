@@ -16,7 +16,8 @@ type Properties = {
   children: ReactNode;
 };
 export const PropProvider = ({children}: Properties) => {
-  const [modalTitle, setModalTitle] = useState<string>('Crew Modal');
+  const [modalTitle, setModalTitle] = useState<string>('Crew');
+
   return (
     <PropContext.Provider value={{modalTitle, setModalTitle}}>
       {children}

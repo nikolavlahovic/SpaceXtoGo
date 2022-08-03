@@ -1,8 +1,13 @@
-import {View, FlatList, ListRenderItem, Alert} from 'react-native';
+import {FlatList, ListRenderItem, Alert, Platform} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import RocketCard from '../components/RocketCard';
 import {getRocketData, RocketData} from '../services/rocketService';
 import {checkConnectivity} from '../utils/CheckConnection';
+import {
+  requestCameraPermission,
+  requestExternalStoragePermission,
+} from '../AppPermisions/AndroidPermissions';
+import {requestAttPermission} from '../AppPermisions/iOSPermissions';
 
 const RocketsScreen = ({}) => {
   const [rockets, setRockets] = useState<RocketData[] | null>(null);
@@ -40,6 +45,16 @@ const RocketsScreen = ({}) => {
     );
   };
   const keyExtractor = ({id}: RocketData) => id;
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      requestCameraPermission();
+      requestExternalStoragePermission();
+    }
+    if (Platform.OS === 'ios') {
+      requestAttPermission();
+    }
+  }, []);
 
   useEffect(() => {
     getRockets();
