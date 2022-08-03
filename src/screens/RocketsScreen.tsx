@@ -1,18 +1,27 @@
-import {View, FlatList, ListRenderItem} from 'react-native';
+import {View, FlatList, ListRenderItem, Alert} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import RocketCard from '../components/RocketCard';
 import {getRocketData, RocketData} from '../services/rocketService';
+import {checkConnectivity} from '../utils/CheckConnection';
 
 const RocketsScreen = ({}) => {
   const [rockets, setRockets] = useState<RocketData[] | null>(null);
   const getRockets = useCallback(async () => {
     try {
+      const hasInternetAccess = await checkConnectivity();
       const {data} = await getRocketData();
       setRockets(data);
+      if (!hasInternetAccess) {
+        Alert.alert(
+          'Connection issue',
+          'Make sure you are connected to the internet',
+        );
+      }
     } catch (err) {
-    } finally {
+      Alert.alert('Problem with the server', 'Api server not working');
     }
   }, []);
+
   const renderItem: ListRenderItem<RocketData> = ({
     item,
   }: {
@@ -40,9 +49,8 @@ const RocketsScreen = ({}) => {
     <FlatList
       data={rockets}
       renderItem={renderItem}
-      keyExtractor={keyExtractor}>
-      <View />
-    </FlatList>
+      keyExtractor={keyExtractor}
+    />
   );
 };
 
