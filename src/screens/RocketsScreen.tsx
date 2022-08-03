@@ -1,4 +1,4 @@
-import {View, FlatList} from 'react-native';
+import {View, FlatList, ListRenderItem} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import RocketCard from '../components/RocketCard';
 import {getRocketData, RocketData} from '../services/rocketService';
@@ -13,6 +13,24 @@ const RocketsScreen = ({}) => {
     } finally {
     }
   }, []);
+  const renderItem: ListRenderItem<RocketData> = ({
+    item,
+  }: {
+    item: RocketData;
+  }) => {
+    return (
+      <RocketCard
+        name={item.name}
+        id={item.id}
+        active={item.active}
+        description={item.description}
+        flickr_images={item.flickr_images}
+        height={item.height}
+        wikipedia={item.wikipedia}
+      />
+    );
+  };
+  const keyExtractor = ({id}: RocketData) => id;
 
   useEffect(() => {
     getRockets();
@@ -21,18 +39,8 @@ const RocketsScreen = ({}) => {
   return (
     <FlatList
       data={rockets}
-      renderItem={({item}) => (
-        <RocketCard
-          name={item.name}
-          id={item.id}
-          active={item.active}
-          description={item.description}
-          flickr_images={item.flickr_images}
-          height={item.height}
-          wikipedia={item.wikipedia}
-        />
-      )}
-      keyExtractor={item => item.id}>
+      renderItem={renderItem}
+      keyExtractor={keyExtractor}>
       <View />
     </FlatList>
   );

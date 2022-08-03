@@ -39,7 +39,7 @@ const App = () => {
         />
         <Tab.Navigator initialRouteName="Rockets">
           <Tab.Screen
-            name="ROCKETS "
+            name="Rockets "
             component={RocketsScreen}
             options={{
               tabBarIcon: () => {
@@ -57,18 +57,20 @@ const App = () => {
               // ),
             }}
           />
-          <Tab.Screen
-            name="CREW"
-            component={CrewRouter}
-            options={{
-              tabBarIcon: () => {
-                return <IoIcon size={30} name={'people'} color={'#000'} />;
-              },
-              tabBarActiveTintColor: '#000',
-              tabBarInactiveTintColor: '#ccc',
-              headerTitleAlign: 'center',
-            }}
-          />
+          <Tab.Group screenOptions={{headerShown: false}}>
+            <Tab.Screen
+              name="Crew"
+              component={CrewRouter}
+              options={{
+                tabBarIcon: () => {
+                  return <IoIcon size={30} name={'people'} color={'#000'} />;
+                },
+                tabBarActiveTintColor: '#000',
+                tabBarInactiveTintColor: '#ccc',
+                headerTitleAlign: 'center',
+              }}
+            />
+          </Tab.Group>
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>
