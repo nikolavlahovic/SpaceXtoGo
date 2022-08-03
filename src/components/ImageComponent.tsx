@@ -7,7 +7,7 @@ const ImageComponent = ({agency}: Props) => {
   if (agency === 'NASA') {
     return (
       <Image
-        source={require('../../assets/NASA-pdf.png')}
+        source={require('../../assets/NASA.png')}
         style={styles.logoImage}
       />
     );
@@ -15,7 +15,7 @@ const ImageComponent = ({agency}: Props) => {
   if (agency === 'SpaceX') {
     return (
       <Image
-        source={require('../../assets/SpaceX.png')}
+        source={require('../../assets/spaceX.png')}
         style={styles.spacexLogo}
       />
     );
